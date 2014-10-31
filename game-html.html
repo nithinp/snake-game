@@ -1,0 +1,373 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<title>Source Code of Snake Game using Python Pygame.</title>
+<meta name="Generator" content="Vim/7.3">
+<meta name="plugin-version" content="vim7.3_v6">
+<meta name="syntax" content="python">
+<meta name="settings" content="use_css">
+<style type="text/css">
+<!--
+pre { font-family: monospace; color: #000000; background-color: #ffffff; }
+body { font-family: monospace; color: #000000; background-color: #ffffff; }
+.Statement { color: #804040; font-weight: bold; }
+.Identifier { color: #008080; }
+.Constant { color: #ff00ff; }
+.PreProc { color: #a020f0; }
+.Comment { color: #0000ff; }
+-->
+</style>
+</head>
+<body>
+
+	<h2><b>Source Code of Snake Game using Python Pygame.</b></h2>
+<pre>
+
+<span class="Comment">##############################################################################</span>
+<span class="Comment">#                                                                            #</span>
+<span class="Comment">#                              Snake Game                                    #</span>
+<span class="Comment">#                                                                            #</span>
+<span class="Comment">#                                                                            #</span>
+<span class="Comment"># CREATED BY    :    Nithin.P                                                #</span>
+<span class="Comment">#                    nithup123@gmail.com                                     #</span>
+<span class="Comment">#                    <a href="http://facebook.com/nithin.nithinp">http://facebook.com/nithin.nithinp</a>                      #</span>
+<span class="Comment">#                                                                            #</span>
+<span class="Comment"># Description   :    This is Snake Game  coded by me                         #</span>
+<span class="Comment">#                    in python using pygame module.                          #</span>
+<span class="Comment">#                                                                            #</span>
+<span class="Comment"># License       :    This Source Code is free to use                         #</span>
+<span class="Comment">#                    for educational purpose only.                           #</span>
+<span class="Comment">#                                                                            #</span>
+<span class="Comment"># Instructions  :    Use 'UP' key to change direction of snake to 'UP'       #</span>
+<span class="Comment">#                    Use 'DOWN' key to change direction of snake to 'DOWN'   #</span>
+<span class="Comment">#                    Use 'LEFT' key to change direction of snake to 'LEFT'   #</span>
+<span class="Comment">#                    Use 'RIGHT' key to change direction of snake to 'RIGHT' #</span>
+<span class="Comment">#                                                                            #</span>
+<span class="Comment">##############################################################################</span>
+
+
+
+<span class="PreProc">import</span> pygame
+<span class="PreProc">import</span> sys
+<span class="PreProc">import</span> random
+
+
+<span class="Comment"># Initial Conditions.</span>
+
+white=(<span class="Constant">255</span>,<span class="Constant">255</span>,<span class="Constant">255</span>)
+black=(<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>)
+green=(<span class="Constant">0</span>,<span class="Constant">255</span>,<span class="Constant">0</span>)
+red=(<span class="Constant">255</span>,<span class="Constant">0</span>,<span class="Constant">0</span>)
+blue=(<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">255</span>)
+gray=(<span class="Constant">128</span>,<span class="Constant">128</span>,<span class="Constant">128</span>)
+size=[<span class="Constant">720</span>,<span class="Constant">630</span>]
+cube_size=<span class="Constant">30</span>
+snake=[{<span class="Constant">'i_cord'</span> : <span class="Constant">5</span>,<span class="Constant">'j_cord'</span> : <span class="Constant">7</span>},{<span class="Constant">'i_cord'</span> : <span class="Constant">5</span>,<span class="Constant">'j_cord'</span> : <span class="Constant">8</span>},{<span class="Constant">'i_cord'</span> : <span class="Constant">5</span>,<span class="Constant">'j_cord'</span> : <span class="Constant">9</span>},{<span class="Constant">'i_cord'</span> : <span class="Constant">5</span>,<span class="Constant">'j_cord'</span> : <span class="Constant">10</span>}]
+new_food=<span class="Identifier">True</span>
+food=<span class="Identifier">None</span>
+time1=pygame.time.get_ticks()
+direction=<span class="Constant">'right'</span>
+game_over=<span class="Identifier">False</span>
+score=<span class="Constant">0</span>
+paused_game=<span class="Identifier">False</span>
+time_limit=<span class="Constant">300</span>       <span class="Comment"># Increase this time limit to decrease speed of snake</span>
+
+
+
+
+
+
+<span class="Comment"># Function to reset the game.</span>
+
+<span class="Statement">def</span> <span class="Identifier">reset_game</span>() :
+        <span class="Statement">global</span> snake
+        <span class="Statement">global</span> new_food
+        <span class="Statement">global</span> food
+        <span class="Statement">global</span> time1
+        <span class="Statement">global</span> direction
+        <span class="Statement">global</span> game_over
+        <span class="Statement">global</span> score
+
+        snake=[{<span class="Constant">'i_cord'</span> : <span class="Constant">5</span>,<span class="Constant">'j_cord'</span> : <span class="Constant">7</span>},{<span class="Constant">'i_cord'</span> : <span class="Constant">5</span>,<span class="Constant">'j_cord'</span> : <span class="Constant">8</span>},{<span class="Constant">'i_cord'</span> : <span class="Constant">5</span>,<span class="Constant">'j_cord'</span> : <span class="Constant">9</span>},{<span class="Constant">'i_cord'</span> : <span class="Constant">5</span>,<span class="Constant">'j_cord'</span> : <span class="Constant">10</span>}]
+        new_food=<span class="Identifier">True</span>
+        food=<span class="Identifier">None</span>
+        time1=pygame.time.get_ticks()
+        direction=<span class="Constant">'right'</span>
+        game_over=<span class="Identifier">False</span>
+        score=<span class="Constant">0</span>
+
+
+
+
+<span class="Comment"># Function to wait for any key press.</span>
+
+<span class="Statement">def</span> <span class="Identifier">wait_for_any_key</span>() :
+        <span class="Statement">while</span> <span class="Identifier">True</span> :
+                <span class="Statement">for</span> event <span class="Statement">in</span> pygame.event.get() :
+                        <span class="Statement">if</span> event.<span class="Identifier">type</span>==pygame.QUIT :
+                                sys.exit()
+                                pygame.quit()
+                        <span class="Statement">if</span> event.<span class="Identifier">type</span> == pygame.KEYDOWN :
+                                <span class="Statement">return</span> <span class="Identifier">True</span>
+
+
+
+
+
+<span class="Comment"># Function to print press any key.</span>
+
+<span class="Statement">def</span> <span class="Identifier">print_press_any_key</span>() :
+        <span class="Statement">global</span> paused_game
+        font=pygame.font.Font(<span class="Identifier">None</span>,<span class="Constant">30</span>)
+        <span class="Statement">if</span> paused_game :
+                text = font.render(<span class="Constant">&quot;Press Escape key to continue&quot;</span>, <span class="Identifier">True</span>, gray)
+        <span class="Statement">else</span> :
+                text = font.render(<span class="Constant">&quot;Press any key to continue&quot;</span>, <span class="Identifier">True</span>, gray)
+        rect = text.get_rect()
+        rect.centerx=size[<span class="Constant">0</span>]-<span class="Constant">150</span>
+        rect.centery=size[<span class="Constant">1</span>]-<span class="Constant">50</span>
+        screen.blit(text, rect)
+
+
+
+
+
+
+
+
+
+<span class="Comment"># Function to print 'Paused'.</span>
+
+<span class="Statement">def</span> <span class="Identifier">print_paused_game</span>() :
+        font=pygame.font.Font(<span class="Identifier">None</span>,<span class="Constant">230</span>)
+        overText = font.render(<span class="Constant">'Paused'</span>, <span class="Identifier">True</span>, white)
+        overRect = overText.get_rect()
+        overRect.centerx=(size[<span class="Constant">0</span>]/<span class="Constant">2</span>)
+        overRect.centery=(size[<span class="Constant">1</span>]/<span class="Constant">2</span>)
+        screen.blit(overText, overRect)
+        print_press_any_key()
+
+
+
+
+
+
+
+
+<span class="Comment"># Function to draw initial screen.</span>
+
+<span class="Statement">def</span> <span class="Identifier">draw_initial_screen</span>() :
+        play()
+        draw_screen()
+        font=pygame.font.Font(<span class="Identifier">None</span>,<span class="Constant">220</span>)
+        gameText = font.render(<span class="Constant">&quot;Nithin's&quot;</span>, <span class="Identifier">True</span>, white)
+        overText = font.render(<span class="Constant">'Snake'</span>, <span class="Identifier">True</span>, white)
+        over1Text = font.render(<span class="Constant">'Game'</span>, <span class="Identifier">True</span>, white)
+        gameRect = gameText.get_rect()
+        overRect = overText.get_rect()
+        over1Rect = over1Text.get_rect()
+        gameRect.centerx=(size[<span class="Constant">0</span>]/<span class="Constant">2</span>)
+        gameRect.centery=(size[<span class="Constant">1</span>]/<span class="Constant">2</span>)-<span class="Constant">150</span>
+        overRect.centerx=(size[<span class="Constant">0</span>]/<span class="Constant">2</span>)
+        overRect.centery=(size[<span class="Constant">1</span>]/<span class="Constant">2</span>)
+        over1Rect.centerx=(size[<span class="Constant">0</span>]/<span class="Constant">2</span>)
+        over1Rect.centery=(size[<span class="Constant">1</span>]/<span class="Constant">2</span>+<span class="Constant">150</span>)
+        screen.blit(gameText, gameRect)
+        screen.blit(overText, overRect)
+        screen.blit(over1Text, over1Rect)
+        print_press_any_key()
+        pygame.display.update()
+
+
+
+
+
+
+
+
+<span class="Comment"># Function print Game Over.</span>
+
+<span class="Statement">def</span> <span class="Identifier">print_game_over</span>() :
+        font=pygame.font.Font(<span class="Identifier">None</span>,<span class="Constant">270</span>)
+        font1=pygame.font.Font(<span class="Identifier">None</span>,<span class="Constant">50</span>)
+        gameText = font.render(<span class="Constant">'Game'</span>, <span class="Identifier">True</span>, white)
+        overText = font.render(<span class="Constant">'Over'</span>, <span class="Identifier">True</span>, white)
+        sc=<span class="Constant">&quot;Your Score : &quot;</span>+<span class="Identifier">str</span>(score)
+        scoreText = font1.render(sc, <span class="Identifier">True</span>, white)
+        gameRect = gameText.get_rect()
+        overRect = overText.get_rect()
+        scoreRect = scoreText.get_rect()
+        gameRect.centerx=(size[<span class="Constant">0</span>]/<span class="Constant">2</span>)
+        gameRect.centery=(size[<span class="Constant">1</span>]/<span class="Constant">2</span>)-<span class="Constant">120</span>
+        overRect.centerx=(size[<span class="Constant">0</span>]/<span class="Constant">2</span>)
+        overRect.centery=(size[<span class="Constant">1</span>]/<span class="Constant">2</span>)+<span class="Constant">30</span>
+        scoreRect.centerx=(size[<span class="Constant">0</span>]/<span class="Constant">2</span>)
+        scoreRect.centery=(size[<span class="Constant">1</span>]/<span class="Constant">2</span>)+<span class="Constant">150</span>
+        screen.blit(gameText, gameRect)
+        screen.blit(overText, overRect)
+        screen.blit(scoreText, scoreRect)
+
+
+
+
+
+
+<span class="Comment"># Function create new food location.</span>
+
+<span class="Statement">def</span> <span class="Identifier">create_new_food_location</span>() :
+        tmp=[]
+        <span class="Statement">for</span> i <span class="Statement">in</span> <span class="Identifier">range</span>(<span class="Constant">19</span>) :
+                <span class="Statement">for</span> j <span class="Statement">in</span> <span class="Identifier">range</span>(<span class="Constant">24</span>) :
+                        t={<span class="Constant">'i_cord'</span> : i,<span class="Constant">'j_cord'</span> : j}
+                        <span class="Statement">if</span> t <span class="Statement">not</span> <span class="Statement">in</span> snake :
+                                tmp.append(t)
+        loc=(<span class="Identifier">int</span>(random.random()*<span class="Constant">100000000</span>))%<span class="Identifier">len</span>(tmp)
+        food=tmp[loc]
+        <span class="Statement">return</span> food
+
+
+
+
+
+
+
+<span class="Comment"># Function to draw game screen.</span>
+
+<span class="Statement">def</span> <span class="Identifier">draw_screen</span>() :
+        screen.fill(black)
+        i=<span class="Constant">0</span>
+        <span class="Statement">while</span> i&lt;(size[<span class="Constant">0</span>]) :
+                pygame.draw.line(screen,gray,(i,<span class="Constant">60</span>),(i,size[<span class="Constant">1</span>]))
+                i+=cube_size
+        i=<span class="Constant">60</span>
+        <span class="Statement">while</span> i&lt;(size[<span class="Constant">1</span>]) :
+                pygame.draw.line(screen,gray,(<span class="Constant">0</span>,i),(size[<span class="Constant">0</span>],i))
+                i+=cube_size
+        font=pygame.font.Font(<span class="Identifier">None</span>,<span class="Constant">30</span>)
+        score1=<span class="Constant">'Score : '</span>+<span class="Identifier">str</span>(score)
+        scoreText=font.render(score1,<span class="Identifier">True</span>,white)
+        scoreRect=scoreText.get_rect()
+        scoreRect.centerx=<span class="Identifier">int</span>(size[<span class="Constant">0</span>]/<span class="Constant">2</span>)
+        scoreRect.centery=<span class="Constant">30</span>
+        screen.blit(scoreText,scoreRect)
+        <span class="Statement">for</span> part <span class="Statement">in</span> snake :
+                left=(part[<span class="Constant">'j_cord'</span>]*cube_size)+<span class="Constant">1</span>
+                up=(part[<span class="Constant">'i_cord'</span>]*cube_size)+<span class="Constant">60</span>+<span class="Constant">1</span>
+                pygame.draw.rect(screen,red,(left,up,(cube_size-<span class="Constant">1</span>),(cube_size-<span class="Constant">1</span>)))
+        left=(food[<span class="Constant">'j_cord'</span>]*cube_size)+<span class="Constant">1</span>
+        up=(food[<span class="Constant">'i_cord'</span>]*cube_size)+<span class="Constant">60</span>+<span class="Constant">1</span>
+        pygame.draw.rect(screen,green,(left,up,(cube_size-<span class="Constant">1</span>),(cube_size-<span class="Constant">1</span>)))
+
+
+
+
+
+<span class="Comment"># Main play function.</span>
+
+<span class="Statement">def</span> <span class="Identifier">play</span>() :
+        <span class="Statement">global</span> game_over
+        <span class="Statement">global</span> food
+        <span class="Statement">global</span> snake
+        <span class="Statement">global</span> new_food
+        <span class="Statement">global</span> time1
+        <span class="Statement">global</span> score
+        <span class="Statement">if</span> new_food :
+                food=create_new_food_location()
+                new_food=<span class="Identifier">False</span>
+                <span class="Comment">#print food</span>
+        <span class="Statement">if</span> pygame.time.get_ticks() &gt; (time1+time_limit) :
+                new_snake_head={<span class="Constant">'i_cord'</span> : <span class="Constant">0</span>,<span class="Constant">'j_cord'</span> : <span class="Constant">0</span>}                       <span class="Comment"># Create new snake head.</span>
+                <span class="Statement">if</span> direction==<span class="Constant">'right'</span> :
+                        new_snake_head[<span class="Constant">'i_cord'</span>]=snake[(<span class="Identifier">len</span>(snake)-<span class="Constant">1</span>)][<span class="Constant">'i_cord'</span>]
+                        new_snake_head[<span class="Constant">'j_cord'</span>]=snake[(<span class="Identifier">len</span>(snake)-<span class="Constant">1</span>)][<span class="Constant">'j_cord'</span>]+<span class="Constant">1</span>
+                <span class="Statement">if</span> direction==<span class="Constant">'left'</span> :
+                        new_snake_head[<span class="Constant">'i_cord'</span>]=snake[(<span class="Identifier">len</span>(snake)-<span class="Constant">1</span>)][<span class="Constant">'i_cord'</span>]
+                        new_snake_head[<span class="Constant">'j_cord'</span>]=snake[(<span class="Identifier">len</span>(snake)-<span class="Constant">1</span>)][<span class="Constant">'j_cord'</span>]-<span class="Constant">1</span>
+                <span class="Statement">if</span> direction==<span class="Constant">'up'</span> :
+                        new_snake_head[<span class="Constant">'i_cord'</span>]=snake[(<span class="Identifier">len</span>(snake)-<span class="Constant">1</span>)][<span class="Constant">'i_cord'</span>]-<span class="Constant">1</span>
+                        new_snake_head[<span class="Constant">'j_cord'</span>]=snake[(<span class="Identifier">len</span>(snake)-<span class="Constant">1</span>)][<span class="Constant">'j_cord'</span>]
+                <span class="Statement">if</span> direction==<span class="Constant">'down'</span> :
+                        new_snake_head[<span class="Constant">'i_cord'</span>]=snake[(<span class="Identifier">len</span>(snake)-<span class="Constant">1</span>)][<span class="Constant">'i_cord'</span>]+<span class="Constant">1</span>
+                        new_snake_head[<span class="Constant">'j_cord'</span>]=snake[(<span class="Identifier">len</span>(snake)-<span class="Constant">1</span>)][<span class="Constant">'j_cord'</span>]
+                <span class="Statement">if</span> new_snake_head==food :                                          <span class="Comment"># Snake catches food.</span>
+                        snake.append(new_snake_head)
+                        new_food=<span class="Identifier">True</span>
+                        score+=<span class="Constant">1</span>
+                <span class="Statement">else</span> :
+                        <span class="Statement">if</span> new_snake_head[<span class="Constant">'i_cord'</span>]&lt;<span class="Constant">0</span> <span class="Statement">or</span> new_snake_head[<span class="Constant">'i_cord'</span>]&gt;=<span class="Constant">19</span> <span class="Statement">or</span> new_snake_head[<span class="Constant">'j_cord'</span>]&lt;<span class="Constant">0</span> <span class="Statement">or</span> new_snake_head[<span class="Constant">'j_cord'</span>]&gt;=<span class="Constant">24</span> :  <span class="Comment"># new_new_snake_head exceeds screem size. </span>
+                                game_over=<span class="Identifier">True</span>
+                        <span class="Statement">if</span> new_snake_head <span class="Statement">in</span> snake :             <span class="Comment"># new_new_snake_head strikes with snake body.</span>
+                                game_over=<span class="Identifier">True</span>
+                        <span class="Statement">if</span> game_over==<span class="Identifier">False</span> :
+                                snake.append(new_snake_head)
+                        snake.remove(snake[<span class="Constant">0</span>])
+                time1=pygame.time.get_ticks()
+
+
+
+
+
+
+
+<span class="Comment"># Initial screen.</span>
+
+pygame.init()
+screen=pygame.display.set_mode(size,<span class="Constant">0</span>,<span class="Constant">32</span>)
+pygame.display.set_caption(<span class="Constant">&quot;Nithin's Snake Game&quot;</span>)
+draw_initial_screen()
+<span class="Statement">while</span> <span class="Identifier">True</span> :
+        <span class="Statement">if</span> wait_for_any_key() :
+                <span class="Statement">break</span>
+
+
+<span class="Comment"># Main game loop</span>
+
+<span class="Statement">while</span> <span class="Identifier">True</span> :
+        <span class="Statement">for</span> event <span class="Statement">in</span> pygame.event.get() :
+                <span class="Statement">if</span> event.<span class="Identifier">type</span>==pygame.QUIT :
+                        <span class="Statement">if</span> paused_game :
+                                sys.exit()
+                                pygame.quit()
+                        game_over=<span class="Identifier">True</span>
+                        print_game_over()
+                        pygame.display.update()
+                        time3=pygame.time.get_ticks()
+                        <span class="Statement">while</span> pygame.time.get_ticks() &lt; (time3+<span class="Constant">1000</span>) :
+                                pygame.time.get_ticks()
+                        sys.exit()
+                        pygame.quit()
+                <span class="Statement">if</span> event.<span class="Identifier">type</span> == pygame.KEYDOWN :
+                        <span class="Statement">if</span> event.key == pygame.K_ESCAPE :
+                                <span class="Statement">if</span> paused_game==<span class="Identifier">False</span> :
+                                        paused_game=<span class="Identifier">True</span>
+                                        print_paused_game()
+                                        pygame.display.update()
+                                <span class="Statement">else</span> :
+                                        paused_game=<span class="Identifier">False</span>
+                        <span class="Statement">if</span> event.key == pygame.K_LEFT :                       <span class="Comment"># Change direction of snake to Left.</span>
+                                <span class="Statement">if</span> direction!=<span class="Constant">'right'</span> :
+                                        direction=<span class="Constant">'left'</span>
+                        <span class="Statement">if</span> event.key == pygame.K_RIGHT :                      <span class="Comment"># Change direction of snake to RIGHT.</span>
+                                <span class="Statement">if</span> direction!=<span class="Constant">'left'</span> :
+                                        direction=<span class="Constant">'right'</span>
+                        <span class="Statement">if</span> event.key == pygame.K_DOWN :                       <span class="Comment"># Change direction of snake to DOWN.</span>
+                                <span class="Statement">if</span> direction!=<span class="Constant">'up'</span> :
+                                        direction=<span class="Constant">'down'</span>
+                        <span class="Statement">if</span> event.key == pygame.K_UP :                         <span class="Comment"># Change direction of snake to UP.</span>
+                                <span class="Statement">if</span> direction!=<span class="Constant">'down'</span> :
+                                        direction=<span class="Constant">'up'</span>
+
+
+        <span class="Statement">if</span> game_over==<span class="Identifier">True</span> :
+                print_game_over()
+                pygame.display.update()
+                <span class="Statement">if</span> wait_for_any_key() :
+                        reset_game()
+        <span class="Statement">elif</span> paused_game==<span class="Identifier">False</span> :
+                play()
+                draw_screen()
+                pygame.display.update()
+</pre>
+</body>
+</html>
